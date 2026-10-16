@@ -5,53 +5,98 @@
 Monorepo `hydra/`:
 - `frontend/` — SPA на React + TypeScript
 - `backend/` — API на Go
-- `docs/` — документация (scope, ADR)
+- `docs/` — документация (scope, ADR, report)
 - `.github/` — CI, шаблон PR
 - `CONTRIBUTING.md` — правила разработки
 - `README.md` — описание проекта
 
+**Обоснование:** monorepo выбран для упрощения координации.
+
 ## 2. Ветвление и правила слияния
 
-Ветки: `main`, `develop`, `feature/*`, `fix/*`, `docs/*`.
+### Ветки
+| Ветка | Назначение |
+|-------|-----------|
+| `main` | Стабильная версия |
+| `develop` | Интеграция |
+| `feature/*` | Новые фичи |
+| `fix/*` | Багфиксы |
+| `docs/*` | Документация |
 
-Правила:
+### Правила
 - Только через Pull Request
 - Минимум 1 approve
 - CI должен проходить
 - Squash merge для `feature/*` → `develop`
 - Merge commit для `develop` → `main`
+- Force push и удаление запрещены
+
+### Защита веток
+Настроена для `main` и `develop`:
+- Require pull request before merging
+- Require approvals: 1
+- Dismiss stale approvals
+- Require conversation resolution
+- Allow force pushes — выключено
+- Allow deletions — выключено
+
+Защита **работает** (проверено — прямой push отклоняется).
 
 ## 3. Форматирование и статический анализ
 
-- `.editorconfig` — единый стиль
-- Frontend: ESLint, Prettier, TypeScript
-- Backend: go vet, gofmt
-- CI (GitHub Actions): build, vet, test
+### Настроено
+- `.editorconfig` — единый стиль (отступы, кодировка, переносы)
+- CI (GitHub Actions) — автоматические проверки:
+  - Frontend: `npm ci`, `npm run lint`, `npm run build`
+  - Backend: `go build`, `go vet`, `go test`
+
+### В разработке
+- ESLint, Prettier (frontend)
+- gofmt (backend)
+- Запустятся, когда появится код
+
+CI работает — runs #7, #8, #9 успешно прошли.
 
 ## 4. Порядок рецензирования
 
-1. Ветка от `develop`
-2. Коммиты по Conventional Commits
-3. PR в `develop` по шаблону
-4. Ревьюер (минимум 1) проверяет
+1. Ветка от `develop`: `feature/название`
+2. Коммиты по Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`)
+3. Pull Request в `develop` по шаблону
+4. Ревьюер (минимум 1) проверяет:
+   - Соответствие issue
+   - Читаемость кода
+   - Наличие тестов
+   - Отсутствие секретов
+   - Прохождение CI
 5. Approve → Squash merge → удалить ветку
+
+**Шаблон PR:** `.github/pull_request_template.md`
+**Правила:** `CONTRIBUTING.md`
 
 ## 5. Дополнительно
 
-- SSH-ключ настроен
-- CI работает (runs #7, #8 — success)
+- Private репозиторий (сейчас — public для работы защиты веток)
+- SSH-ключ настроен и проверен
+- CI работает (runs #7, #8, #9 — success)
+- PR #1 смержен (демонстрация процесса)
+- Ветка `feature/test-ci` создана, использована, удалена
 
 ## Примечание
 
-Защита веток настроена
+Защита веток работает на `main` и `develop`.
+На GitHub Free с приватным репозиторием защита не применяется,
+поэтому репозиторий сделан публичным.
 
 Бэклог, спецификация и матрица трассируемости — зона PO.
 На момент сдачи — в работе.
 
 ## Выводы
 
-Организован воспроизводимый процесс:
-- Единая структура
-- Чёткое ветвление
-- Автоматический контроль качества
+Организован воспроизводимый процесс совместной разработки:
+- Единая структура репозитория
+- Чёткое ветвление и правила слияния
+- Автоматический контроль качества (CI)
 - Прозрачное рецензирование
+- Защита веток
+
+Процесс готов к командной работе.
