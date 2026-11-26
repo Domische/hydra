@@ -1,0 +1,251 @@
+
+.topbar {
+  position: relative;
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.topbar-title-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.topbar-back-button {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid #49376d;
+  border-radius: 10px;
+  background: #1c1630;
+  color: #b58aff;
+  font-size: 19px;
+  line-height: 1;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.topbar-back-button:hover {
+  background: #302047;
+  border-color: #a879ff;
+  box-shadow: 0 0 15px rgba(167, 139, 250, 0.18);
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.topbar-search-container,
+.topbar-menu-container {
+  position: relative;
+}
+
+.topbar-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 310px;
+  height: 42px;
+  box-sizing: border-box;
+  padding: 0 12px;
+  border: 1px solid #302d4b;
+  border-radius: 11px;
+  background: #17152e;
+  color: #85819f;
+}
+
+.topbar-search:focus-within {
+  border-color: #8955ed;
+  box-shadow: 0 0 0 3px rgba(137, 85, 237, 0.12);
+}
+
+.topbar-search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #f3f1ff;
+  font: inherit;
+  font-size: 13px;
+}
+
+.topbar-search input::placeholder {
+  color: #77738f;
+}
+
+.topbar-search-shortcut {
+  padding: 3px 6px;
+  border: 1px solid #393653;
+  border-radius: 5px;
+  font-size: 11px;
+}
+
+.topbar-icon-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #aaa6c5;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.topbar-icon-button:hover {
+  background: #211d3b;
+  color: white;
+}
+
+.topbar-notification-dot {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #a16bff;
+}
+
+.topbar-avatar {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a16bff, #7138e8);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.topbar-avatar:hover,
+.topbar-avatar.active {
+  border-color: #b995ff;
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.15);
+}
+
+.topbar-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  z-index: 200;
+  min-width: 230px;
+  padding: 10px;
+  border: 1px solid #393653;
+  border-radius: 13px;
+  background: #1b1935;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+  color: #f3f1ff;
+}
+
+.topbar-dropdown p {
+  margin: 8px;
+  color: #9995b3;
+  font-size: 13px;
+}
+
+.topbar-search-results {
+  left: 0;
+  right: auto;
+  width: 310px;
+  box-sizing: border-box;
+}
+
+.topbar-search-results > button,
+.topbar-profile-menu > button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #e8e5fa;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+
+.topbar-search-results > button:hover,
+.topbar-profile-menu > button:hover {
+  background: #292644;
+}
+
+.topbar-search-results .topbar-dropdown-close {
+  justify-content: center;
+  margin-top: 6px;
+  border-top: 1px solid #393653;
+  color: #aaa6c5;
+  font-size: 12px;
+}
+
+.topbar-notifications {
+  width: 230px;
+}
+
+.topbar-notifications strong {
+  display: block;
+  padding: 8px;
+}
+
+.topbar-profile-menu {
+  width: 260px;
+}
+
+.topbar-profile-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 8px 15px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #393653;
+}
+
+.topbar-profile-avatar {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a16bff, #c026d3);
+  color: white;
+  font-weight: 700;
+}
+
+.topbar-profile-info strong,
+.topbar-profile-info span {
+  display: block;
+}
+
+.topbar-profile-info span {
+  margin-top: 4px;
+  color: #9995b3;
+  font-size: 12px;
+}
+
+@media (max-width: 760px) {
+  .topbar-search {
+    width: 190px;
+  }
+
+  .topbar-search-results {
+    width: 260px;
+  }
+
+  .topbar-actions {
+    gap: 8px;
+  }
+}
