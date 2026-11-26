@@ -1,0 +1,52 @@
+/*
+ * Тема tldraw под дизайн Hydra.
+ *
+ * tldraw задаёт токены на `.tl-theme__light` / `.tl-theme__dark`,
+ * поэтому переопределяем их только внутри холста доски и опираемся
+ * на переменные приложения из `index.css`.
+ */
+
+.board-canvas .tl-theme__light,
+.board-canvas .tl-theme__dark {
+  /* Холст */
+  --tl-color-background: var(--bg-main);
+  --tl-color-grid: #2a2440;
+  --tl-color-selection-fill: var(--accent-soft);
+  --tl-color-selection-stroke: var(--accent);
+
+  /* Панели и поверхности */
+  --tl-color-panel: var(--bg-card);
+  --tl-color-panel-contrast: var(--bg-card-hover);
+  --tl-color-panel-overlay: rgba(25, 22, 46, 0.92);
+  --tl-color-panel-transparent: rgba(25, 22, 46, 0);
+  --tl-color-low: var(--bg-input);
+  --tl-color-low-border: var(--border);
+  --tl-color-divider: var(--border);
+  --tl-color-muted-none: rgba(255, 255, 255, 0);
+  --tl-color-muted-0: rgba(255, 255, 255, 0.03);
+  --tl-color-muted-1: rgba(255, 255, 255, 0.08);
+  --tl-color-muted-2: rgba(255, 255, 255, 0.05);
+  --tl-color-hint: var(--accent-soft);
+  --tl-color-overlay: rgba(5, 5, 20, 0.72);
+
+  /* Текст */
+  --tl-color-text: var(--text-primary);
+  --tl-color-text-0: var(--text-primary);
+  --tl-color-text-1: #d9d3ee;
+  --tl-color-text-2: var(--text-secondary);
+  --tl-color-text-3: var(--text-secondary);
+  --tl-color-text-disabled: var(--text-muted);
+  /* Цвет текста подсказок: tldraw использует токен как контраст к --tl-color-tooltip. */
+  --tl-color-text-shadow: var(--text-primary);
+
+  /* Акценты */
+  --tl-color-primary: var(--accent);
+  --tl-color-selected: var(--accent);
+  --tl-color-selected-contrast: #ffffff;
+  --tl-color-focus: var(--accent-hover);
+  --tl-color-tooltip: #211d38;
+  --tl-color-success: var(--success);
+  --tl-color-info: #5aa9ff;
+  --tl-color-warning: #f5a000;
+  --tl-color-danger: #ff6b6b;
+}
