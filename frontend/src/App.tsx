@@ -186,6 +186,7 @@ function App() {
               </div>
 
               <ProjectMap
+                key={activeProject.id}
                 projectId={activeProject.id}
                 boards={boards.filter(
                   (board) => board.projectId === activeProject.id
@@ -327,6 +328,7 @@ function App() {
 
       {isProjectSettingsPage && settingsProject && (
         <ProjectSettingsModal
+          key={settingsProject.id}
           project={settingsProject}
           onSave={handleSaveProject}
           onClose={() =>
