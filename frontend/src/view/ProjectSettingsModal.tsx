@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { Project } from "../model/Project";
 
 interface ProjectSettingsModalProps {
@@ -15,11 +15,6 @@ export function ProjectSettingsModal({
 }: ProjectSettingsModalProps) {
   const [title, setTitle] = useState(project.title);
   const [description, setDescription] = useState(project.description);
-
-  useEffect(() => {
-    setTitle(project.title);
-    setDescription(project.description);
-  }, [project]);
 
   const handleSave = () => {
     if (!title.trim()) return;

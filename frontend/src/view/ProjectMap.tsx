@@ -28,6 +28,13 @@ function getSavedPositions(projectId: string): Record<string, Position> {
   }
 }
 
+function getDefaultPosition(index: number): Position {
+  return {
+    x: 90 + (index % 2) * 370,
+    y: 70 + Math.floor(index / 2) * 250,
+  };
+}
+
 function getConnectionGeometry(
   source: Position,
   target: Position
@@ -103,9 +110,15 @@ export function ProjectMap({
   const addLink = useLinkStore((state) => state.addLink);
   const deleteLink = useLinkStore((state) => state.deleteLink);
 
-  const [positions, setPositions] = useState<Record<string, Position>>(
-    () => getSavedPositions(projectId)
-  );
+  const [positions, setPositions] = useState<Record<string, Position>>(() => {
+    const savedPositions = getSavedPositions(projectId);
+
+    boards.forEach((board, index) => {
+      savedPositions[board.id] ??= getDefaultPosition(index);
+    });
+
+    return savedPositions;
+  });
 
   const [selectedBoardId, setSelectedBoardId] = useState<string | null>(null);
   const [draggedBoardId, setDraggedBoardId] = useState<string | null>(null);
@@ -118,38 +131,6 @@ export function ProjectMap({
   useEffect(() => {
     void loadLinks();
   }, [loadLinks]);
-
-  useEffect(() => {
-    setPositions(getSavedPositions(projectId));
-    setSelectedBoardId(null);
-    setDraggedBoardId(null);
-    setConnectionStart(null);
-    setConnectMode(false);
-  }, [projectId]);
-
-  useEffect(() => {
-    setPositions((current) => {
-      const next = { ...current };
-
-      boards.forEach((board, index) => {
-        if (!next[board.id]) {
-          next[board.id] = {
-            x: 90 + (index % 2) * 370,
-            y: 70 + Math.floor(index / 2) * 250,
-          };
-        }
-      });
-
-      return next;
-    });
-
-    setSelectedBoardId((current) => {
-      if (current && boards.some((board) => board.id === current)) {
-        return current;
-      }
-      return boards[0]?.id ?? null;
-    });
-  }, [boards]);
 
   useEffect(() => {
     localStorage.setItem(
@@ -166,18 +147,23 @@ export function ProjectMap({
       projectBoardIds.has(link.targetBoardId)
   );
 
+  const resolvedSelectedBoardId =
+    selectedBoardId && boards.some((board) => board.id === selectedBoardId)
+      ? selectedBoardId
+      : boards[0]?.id ?? null;
+
   const selectedBoard = boards.find(
-    (board) => board.id === selectedBoardId
+    (board) => board.id === resolvedSelectedBoardId
   );
 
   const selectedLinks = projectLinks.filter(
     (link) =>
-      link.sourceBoardId === selectedBoardId ||
-      link.targetBoardId === selectedBoardId
+      link.sourceBoardId === resolvedSelectedBoardId ||
+      link.targetBoardId === resolvedSelectedBoardId
   );
 
   const getOtherBoardId = (sourceBoardId: string, targetBoardId: string) =>
-    sourceBoardId === selectedBoardId ? targetBoardId : sourceBoardId;
+    sourceBoardId === resolvedSelectedBoardId ? targetBoardId : sourceBoardId;
 
   const handlePointerDown = (
     event: PointerEvent<HTMLDivElement>,
@@ -318,8 +304,10 @@ export function ProjectMap({
             </defs>
 
             {projectLinks.map((link) => {
-              const source = positions[link.sourceBoardId];
-              const target = positions[link.targetBoardId];
+              const sourceIndex = boards.findIndex((board) => board.id === link.sourceBoardId);
+              const targetIndex = boards.findIndex((board) => board.id === link.targetBoardId);
+              const source = positions[link.sourceBoardId] ?? getDefaultPosition(sourceIndex);
+              const target = positions[link.targetBoardId] ?? getDefaultPosition(targetIndex);
 
               if (!source || !target) return null;
 
@@ -358,11 +346,10 @@ export function ProjectMap({
             })}
           </svg>
 
-          {boards.map((board) => {
-            const position = positions[board.id];
-            if (!position) return null;
+          {boards.map((board, index) => {
+            const position = positions[board.id] ?? getDefaultPosition(index);
 
-            const isSelected = selectedBoardId === board.id;
+            const isSelected = resolvedSelectedBoardId === board.id;
             const isConnectionStart = connectionStart === board.id;
 
             const boardLinkCount = projectLinks.filter(

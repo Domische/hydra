@@ -5,7 +5,8 @@ import { ProjectService } from "../services/ProjectService";
 describe("ProjectService + ProjectRepository integration", () => {
   beforeEach(() => {
     localStorage.clear();
-    vi.spyOn(globalThis.crypto, "randomUUID").mockReturnValue("project-integration-1" as any);
+    const projectId = "project-integration-1" as ReturnType<typeof crypto.randomUUID>;
+    vi.spyOn(globalThis.crypto, "randomUUID").mockReturnValue(projectId);
   });
 
   it("creates, retrieves, updates, and deletes a project through real persistence", async () => {
